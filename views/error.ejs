@@ -1,0 +1,13 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+<div class="row mt-4">
+  <div class="col-6 offset-3">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading"><%= err.message %></h4>
+
+      <% if (err.stack) { %>
+        <pre class="mt-2 text-muted"><%= err.stack %></pre>
+      <% } %>
+    </div>
+  </div>
+</div>
