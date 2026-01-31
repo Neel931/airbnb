@@ -32,9 +32,12 @@
   </head>
   <body>
     <%- include('../includes/navbar.ejs') %>
+     <%- include('../includes/flash.ejs') %>
+    <div class="container"><%- body %>
+     
+    </div>
 
-    <div class="container"><%- body %></div>
-
+     </body>  
     <%- include('../includes/footer.ejs') %>
 
     <script
@@ -43,5 +46,5 @@
       crossorigin="anonymous"
     ></script>
   <script src="/js/script.js"></script>
-  </body>
+ 
   </html>
