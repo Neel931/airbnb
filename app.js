@@ -9,7 +9,7 @@ const flash = require('connect-flash');
 
 const sessionOptions = {
   secret: 'thisshouldbeabettersecret',
-  resace:false,
+  resave: false,
   saveUninitialized: true,
   cookie:{
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
@@ -17,6 +17,8 @@ const sessionOptions = {
      httpOnly:true,//used to security perpuse cross scripting attectus
   }
 };
+
+
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -46,11 +48,17 @@ app.use((req, res, next) => {
 app.use('/listings', listingRoutes);
 app.use('/listings/:id/reviews', reviewRoutes);
 
+// 404 page not found handler
+app.use((req, res, next) => {
+  next(new ExpressError(404, 'Page Not Found'));
+});
+
 // error handler
+
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   res.status(statusCode).render('error', { err });
-});
+});       
 
 app.listen(8080, () => {
   console.log('server listening on port 8080');
