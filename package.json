@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "20.16.0"
+  },
   "name": "airbun",
   "version": "1.0.0",
   "main": "index.js",
@@ -11,7 +14,9 @@
   "description": "",
   "dependencies": {
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
     "ejs": "^4.0.1",
     "ejs-mate": "^4.0.0",
     "express": "^5.2.1",

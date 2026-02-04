@@ -5,12 +5,32 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
+dotenv = require('dotenv');
+dotenv.config();
+
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user')
 
+const dbUrl=process.env.ATLASDB_URL;
+
+
+const store = MongoStore.create({
+  mongoUrl:dbUrl,
+  crypto:{
+    secret:process.env.secret
+  },
+  touchAfter:24*60*60
+}); 
+ 
+store.on("error",function(e){
+  console.log("SESSION STORE ERROR",e)
+});
+
 const sessionOptions = {
+  store,
   secret: 'thisshouldbeabettersecret',
   resave: false,
   saveUninitialized: true,
@@ -22,19 +42,32 @@ const sessionOptions = {
 };
 
 
+
 app.use(session(sessionOptions));
 app.use(flash());
 
 const ExpressError = require('./utils/ExpressError');
 
 
+
 const listingRoutes = require('./routes/listing');
 const reviewRoutes = require('./routes/review');
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb://127.0.0.1:27017/wendlush')
-  .then(() => console.log('connected to db'))
-  .catch(err => console.log(err));
+
+
+main().then(() => {
+  console.log('Database connected');
+}).catch(err => {
+
+  console.log('Database connection error:');
+  console.log(err);
+});
+
+async function main() {
+  await mongoose.connect(dbUrl);
+  console.log('MongoDB connected');
+} 
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
